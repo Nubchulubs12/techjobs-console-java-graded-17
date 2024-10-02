@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 /**
  * Created by LaunchCode
  */
@@ -19,6 +19,10 @@ public class JobData {
     private static boolean isDataLoaded = false;
 
     private static ArrayList<HashMap<String, String>> allJobs;
+
+    public static ArrayList<HashMap<String, String>> getAllJobs() {
+        return allJobs;
+    }
 
     /**
      * Fetch list of all values from loaded data,
@@ -70,13 +74,14 @@ public class JobData {
         loadData();
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
-
+        String lowerCaseValue = value.toLowerCase();
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(lowerCaseValue)) {
                 jobs.add(row);
+
             }
         }
 
@@ -94,9 +99,25 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+
+        for (HashMap<String, String> row : allJobs) {
+
+            for (Map.Entry<String, String> column : row.entrySet()) {
+                String columnValue = column.getValue().toLowerCase();
+                if (columnValue.contains(value.toLowerCase())) {
+
+
+                    jobs.add(row);
+
+                }
+            }
+        }
+
+        return jobs;
     }
+
 
     /**
      * Read in data from a CSV file and store it in a list
